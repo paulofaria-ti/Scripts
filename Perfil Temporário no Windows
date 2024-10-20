@@ -1,0 +1,5 @@
+Problema com perfil temporário:
+1) Localize onde está o Backup e salve no C:
+2) Na coluna à esquerda, navegue até “HKEY_LOCAL_MACHINE \ SOFTWARE \ Microsoft \ Windows NT \ CurrentVersion” 
+3) Expanda a chave “ProfileList”. Em seguida, altere a subchave cujo nome tem final “.bak" removendo a extensão. 
+4) Após isso, delete as pastas temporárias no C.
