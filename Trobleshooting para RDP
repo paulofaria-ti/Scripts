@@ -1,0 +1,11 @@
+Abrindo o CMD no host remoto
+
+psexec -s \\hostname cmd
+netsh winsock reset ( realiza reset no protocolo TCP/IP e Winsock )
+netsh int ip reset ( redefine protocolo TCP/IP )
+ipconfig /flushdns ( limpa cache dns )
+shutdown -r -t 0 /F ( Reinicia o Host com tempo 0 e força o reinicio fechando os aplicativos )
+
+
+Reinicialização remota
+shutdown -r -f -t 0 -m \\hostname
