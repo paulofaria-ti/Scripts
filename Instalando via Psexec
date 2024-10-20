@@ -1,0 +1,16 @@
+Comando básico do PsExec para instalação remota
+O comando a seguir permite instalar um programa remotamente.
+
+psexec \\<nome_ou_ip_da_maquina> -u <usuario> -p <senha> -h -i msiexec /i "\\caminho_rede\programa.msi" /quiet /norestart
+
+Explicando os parâmetros:
+
+\\<nome_ou_ip_da_maquina>: Endereço ou nome do host remoto.
+-u <usuario>: Nome de usuário com permissão administrativa.
+-p <senha>: Senha desse usuário.
+-h: Executa o comando com privilégios elevados.
+-i: Permite interação com o desktop remoto (se necessário para a instalação).
+msiexec /i: Comando para instalar um arquivo .msi.
+\\caminho_rede\programa.msi: Caminho na rede para o instalador.
+/quiet: Instalação silenciosa, sem interface.
+/norestart: Impede que o sistema seja reiniciado automaticamente após a instalação.
