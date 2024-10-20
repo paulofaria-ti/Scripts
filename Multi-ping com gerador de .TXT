@@ -1,0 +1,80 @@
+Abaixo está um código em **PowerShell** que realiza o *multiping* em um intervalo de IPs fornecido, verificando quais hosts respondem ao ping e registrando os resultados em um arquivo `.txt` na unidade **C:**.
+
+---
+
+### **Script PowerShell para Multiping**
+
+
+# Nome do arquivo de saída na unidade C:
+$outputFile = "C:\hosts_respondidos.txt"
+
+# Limpa o arquivo anterior (se existir)
+if (Test-Path $outputFile) {
+    Remove-Item $outputFile
+}
+
+# Função para realizar o ping e gravar o resultado
+function Test-Host {
+    param (
+        [string]$ip
+    )
+
+    if (Test-Connection -ComputerName $ip -Count 1 -Quiet) {
+        "$ip está ativo" | Out-File -Append -FilePath $outputFile
+        Write-Host "$ip está ativo"
+    } else {
+        Write-Host "$ip não respondeu"
+    }
+}
+
+# Recebe o range de IPs do usuário
+$inicio = Read-Host "Informe o IP inicial (ex: 192.168.0.1)"
+$fim = Read-Host "Informe o IP final (ex: 192.168.0.254)"
+
+# Extrai os 3 primeiros octetos do IP inicial
+$baseIP = $inicio.Substring(0, $inicio.LastIndexOf('.') + 1)
+
+# Pega os valores do último octeto do IP inicial e final
+$start = [int]($inicio.Split('.')[-1])
+$end = [int]($fim.Split('.')[-1])
+
+# Faz ping em todos os IPs do range informado
+for ($i = $start; $i -le $end; $i++) {
+    $ip = "$baseIP$i"
+    Test-Host -ip $ip
+}
+
+Write-Host "Verificação concluída. Confira o arquivo: $outputFile"
+```
+
+---
+
+### **Como Usar o Script**
+
+1. **Copie o código** e cole em um arquivo com a extensão `.ps1` (por exemplo, `multiping.ps1`).
+2. **Execute o PowerShell como administrador** (para garantir permissões de gravação na unidade `C:`).
+3. **Permitir execução de scripts** (se necessário):
+   ```powershell
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+   ```
+4. **Rodar o script**:
+   ```powershell
+   .\multiping.ps1
+   ```
+5. **Informe o intervalo de IPs** quando solicitado, por exemplo:
+   - IP inicial: `192.168.0.1`
+   - IP final: `192.168.0.254`
+
+6. O resultado dos hosts que responderam será salvo em `C:\hosts_respondidos.txt`.
+
+---
+
+### **Descrição do Funcionamento**
+
+- **`Test-Connection`**: Executa o ping em cada IP e retorna verdadeiro ou falso.
+- **Faixa de IPs**: O script permite fornecer um intervalo de IPs (como `192.168.0.1` a `192.168.0.254`).
+- **Registro**: Os IPs que respondem ao ping são registrados no arquivo `C:\hosts_respondidos.txt`.
+
+---
+
+Caso precise de alguma modificação ou tenha dúvidas, é só avisar!
