@@ -1,0 +1,16 @@
+$ServerName = Get-Content "C:\users\USERNAME\Desktop\hosts.txt"  
+  
+foreach ($Server in $ServerName)
+{  
+  
+        if (test-Connection -ComputerName $Server -Count 1 -quiet ) {   
+          
+            Write-Host "$Server" -foregroundcolor Green
+}
+
+        else  
+                      
+                    {Write-Host "$Server" -ForegroundColor Red       
+                    }     
+          
+}  
