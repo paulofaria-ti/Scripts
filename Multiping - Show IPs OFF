@@ -2,6 +2,6 @@ $ServerName = Get-Content "D:\hosts.txt"
 
 foreach ($Server in $ServerName) {
     if (-not (Test-Connection -ComputerName $Server -Count 1 -Quiet)) {
-        Write-Host "$Server não está respondendo." -ForegroundColor Red
+        Write-Host "$Server" -ForegroundColor Red
     }
 }
