@@ -1,0 +1,29 @@
+# Função para gerar uma lista de IPs em uma faixa
+function Get-IPsInRange {
+    param (
+        [string]$StartIP,
+        [string]$EndIP
+    )
+
+    $Start = [System.Net.IPAddress]::Parse($StartIP).GetAddressBytes()
+    $End = [System.Net.IPAddress]::Parse($EndIP).GetAddressBytes()
+
+    $IPs = @()
+    for ($i = $Start[3]; $i -le $End[3]; $i++) {
+        $IPs += "$($Start[0]).$($Start[1]).$($Start[2]).$i"
+    }
+    return $IPs
+}
+
+# Solicita a faixa de IPs ao usuário
+$StartIP = Read-Host "Digite o IP inicial"
+$EndIP = Read-Host "Digite o IP final"
+
+# Verifica quais IPs não respondem
+foreach ($IP in Get-IPsInRange -StartIP $StartIP -EndIP $EndIP) {
+    if (-not (Test-Connection -ComputerName $IP -Count 1 -Quiet)) {
+        Write-Host "$IP não respondeu" -ForegroundColor Red
+    } else {
+        Write-Host "$IP respondeu" -ForegroundColor Green
+    }
+}
