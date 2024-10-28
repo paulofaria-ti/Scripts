@@ -1,0 +1,41 @@
+# Função para gerar uma lista de IPs em uma faixa
+function Get-IPsInRange { 
+    param ( 
+        [string]$StartIP, 
+        [string]$EndIP 
+    ) 
+
+    $Start = [System.Net.IPAddress]::Parse($StartIP).GetAddressBytes() 
+    $End = [System.Net.IPAddress]::Parse($EndIP).GetAddressBytes() 
+
+    $IPs = @() 
+    for ($i = $Start[3]; $i -le $End[3]; $i++) {
+        $IPs += "$($Start[0]).$($Start[1]).$($Start[2]).$i"
+    }
+    return $IPs
+}
+
+# Solicita a faixa de IPs ao usuário
+$StartIP = Read-Host "Digite o IP inicial"
+$EndIP = Read-Host "Digite o IP final"
+
+# Caminho do arquivo para salvar o resultado
+$OutputPath = "D:\resultado_ips.txt"
+
+# Cria ou limpa o conteúdo do arquivo antes de iniciar
+New-Item -Path $OutputPath -ItemType File -Force | Out-Null
+
+# Verifica quais IPs não respondem e grava o resultado no arquivo
+foreach ($IP in Get-IPsInRange -StartIP $StartIP -EndIP $EndIP) {
+    if (-not (Test-Connection -ComputerName $IP -Count 1 -Quiet)) {
+        $Resultado = "$IP não respondeu"
+        Write-Host $Resultado -ForegroundColor Red
+    } else {
+        $Resultado = "$IP respondeu"
+        Write-Host $Resultado -ForegroundColor Green
+    }
+    # Adiciona o resultado ao arquivo
+    Add-Content -Path $OutputPath -Value $Resultado
+}
+
+Write-Host "Resultados salvos em $OutputPath" -ForegroundColor Yellow
