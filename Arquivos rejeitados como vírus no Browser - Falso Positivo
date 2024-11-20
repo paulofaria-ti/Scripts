@@ -1,0 +1,6 @@
+Incidente: Todos os downloads executados por qualquer navegador apresenta vírus detectado.
+
+Solução:
+1) Acessar o regedit
+2) Localizar a pasta " HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments"
+3) Alterando o valor do ScanWithAntiVirus para " 1 "
